@@ -23,7 +23,7 @@ func main() {
 			"to use this to set -until.  For example,\n"+
 			"\ttarry -whatTimeIsIt\n"+
 			"\tCurrent time: 17:22:03")
-		printTimeWhenDone = flag.Bool("printTimeWhenDone", false, "Print out the current time when done")
+		printTimeWhenDone = flag.Bool("printTimeWhenDone", false, "Print out the current time when done (includes milliseconds)")
 	)
 
 	flag.Parse()
