@@ -31,4 +31,7 @@ Here's the complete list of command line options.
         Show the current system time.  You'll probably need to use this to set -until.  For example,
                 tarry -whatTimeIsIt
                 Current time: 17:22:03
+  -printTimeWhenDone
+        Print out the current time when done (includes milliseconds)
+              
 ```
