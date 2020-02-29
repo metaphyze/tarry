@@ -1,12 +1,20 @@
 # tarry
-A simple command line tool for waiting until a specific time.  This is not the same as "sleep" which will wait for duration of time.
-This is useful if you want to execute something at a specific time.  You would probably use it like this:
+A simple command line tool for waiting until a specific time.  This is not the same as "sleep" which will wait for a duration of time.
+This is useful if you want to execute something at a specific time or more likely execute several things at exactly same time such as testing if a server can handle multiple <em>very</em> simultaneous request.  You could probably use it like this with "&&" on Linux, Mac, or Windows:
 
 ```
-   tarry -until=16:03:04 && ./someOtherCommand
+   tarry -until=16:03:04 && someOtherCommand
+```
+This would wait until 4:03:04 PM and then execute someOtherCommand.  Here's a Linux/Mac example of how to run multiple requests all scheduled to start at the same time:
+
+```
+   for request in 1 2 3 4 5 6 7 8 9 10
+   do
+       tarry -until=16:03:04 && date > results.$request &
+   done
 ```
 
-This would wait until 4:03:04 PM and then execute ./someOtherCommand
+
 
 
 ### Command line options
