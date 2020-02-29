@@ -23,13 +23,14 @@ func main() {
 			"to use this to set -until.  For example,\n"+
 			"\ttarry -whatTimeIsIt\n"+
 			"\tCurrent time: 17:22:03")
+		printTimeWhenDone = flag.Bool("printTimeWhenDone", false, "Print out the current time when done")
 	)
 
 	flag.Parse()
 
 	if *whatTimeIsIt {
-		nowInMs := time.Now().Unix() * 1000
-		timeStr := GetSimpleTimeString(nowInMs)
+		nowInMs := time.Now().UnixNano() / 1000000
+		timeStr := GetSimpleTimeString(nowInMs, false)
 		fmt.Printf("Current time: %v\n", timeStr)
 		os.Exit(1) // Exit with non-zero so commands after "&&" do not run
 	}
@@ -64,6 +65,11 @@ func main() {
 	}
 
 	time.Sleep(time.Duration(duration) * time.Nanosecond)
+
+	if *printTimeWhenDone {
+		nowInMs := time.Now().UnixNano() / 1000000
+		fmt.Printf("Current time: %v\n", GetSimpleTimeString(nowInMs, true))
+	}
 }
 
 func GetTimeUntilInNs(timeStr string, plusMs int, inDaysFromNow int) (int64, error) {
@@ -80,9 +86,13 @@ func GetTimeUntilInNs(timeStr string, plusMs int, inDaysFromNow int) (int64, err
 	return time.Date(now.Year(), now.Month(), now.Day(), t.Hour(), t.Minute(), t.Second(), ns, now.Location()).UnixNano(), nil
 }
 
-func GetSimpleTimeString(timeInMs int64) string {
+func GetSimpleTimeString(timeInMs int64, showMs bool) string {
 	seconds := timeInMs / 1000
 	leftOverMs := timeInMs - seconds*1000
 	ns := leftOverMs * 1000000
-	return time.Unix(seconds, ns).Format("15:04:05")
+	if !showMs {
+		return time.Unix(seconds, ns).Format("15:04:05")
+	} else {
+		return time.Unix(seconds, ns).Format("15:04:05.000")
+	}
 }
